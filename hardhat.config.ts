@@ -10,12 +10,12 @@ const config: HardhatUserConfig = {
     sepolia: {
       url: envConfig.ethSepoliaUrl,
       accounts: [envConfig.ethSepoliaOwnerPrivateKey],
-      gasPrice: 10000,
+      gasPrice: 'auto',
     },
     mainnet: {
       url: envConfig.ethMainnetUrl,
       accounts: [envConfig.ethMainnetOwnerPrivateKey],
-      gasPrice: 10000,
+      gasPrice: 'auto',
     },
   },
 };
