@@ -7,6 +7,11 @@ const config: HardhatUserConfig = {
   solidity: '0.8.18',
   networks: {
     hardhat: {},
+    localhost: {
+      url: envConfig.ethLocalhostUrl,
+      accounts: [envConfig.ethLocalhostOwnerPrivateKey],
+      gasPrice: 'auto',
+    },
     sepolia: {
       url: envConfig.ethSepoliaUrl,
       accounts: [envConfig.ethSepoliaOwnerPrivateKey],
