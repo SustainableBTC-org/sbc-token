@@ -7,6 +7,11 @@ cp .env.sample .env
 ```
 Update env vars in the ".env" file.
 
+### Compile
+```shell
+npx hardhat compile
+```
+
 ### Tests
 ```shell
 npx hardhat test

@@ -1,7 +1,9 @@
 import { ethers } from 'hardhat';
 
 async function main() {
-  const SBCToken = await ethers.deployContract('SBCToken');
+  const [owner] = await ethers.getSigners();
+
+  const SBCToken = await ethers.deployContract('SBCToken', [owner]);
   await SBCToken.waitForDeployment();
 
   console.log(`SBCToken deployed at address: ${SBCToken.target}`);

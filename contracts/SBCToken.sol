@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.23;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
@@ -9,7 +9,11 @@ contract SBCToken is Ownable, ERC20Capped {
     mapping (uint256 => uint256) public tokensMintedAtBtcBlockHeight;
     uint256[] public btcBlockHeights;
 
-    constructor() ERC20("Sustainable Bitcoin Certificate", "SBC") ERC20Capped(21000000 * 10 ** 8) {}
+    constructor(address initialOwner)
+        ERC20("Sustainable Bitcoin Certificate", "SBC")
+        ERC20Capped(21000000 * 10 ** 8)
+        Ownable(initialOwner)
+    {}
 
     function decimals() override public pure returns (uint8) {
         return 8;
@@ -28,5 +32,9 @@ contract SBCToken is Ownable, ERC20Capped {
         heights = btcBlockHeights;
 
         return heights;
+    }
+
+    function burn(uint256 value) public onlyOwner {
+        _burn(_msgSender(), value);
     }
 }

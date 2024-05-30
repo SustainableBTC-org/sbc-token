@@ -4,23 +4,23 @@ import '@nomicfoundation/hardhat-toolbox';
 import envConfig from './.config';
 
 const config: HardhatUserConfig = {
-  solidity: '0.8.18',
+  solidity: '0.8.23',
   networks: {
     hardhat: {},
     localhost: {
       url: envConfig.ethLocalhostUrl,
       accounts: [envConfig.ethLocalhostOwnerPrivateKey],
-      gasPrice: 'auto',
+      gasPrice: 1000000000,
     },
     sepolia: {
       url: envConfig.ethSepoliaUrl,
       accounts: [envConfig.ethSepoliaOwnerPrivateKey],
-      gasPrice: 'auto',
+      gasPrice: 1000000000,
     },
     mainnet: {
       url: envConfig.ethMainnetUrl,
       accounts: [envConfig.ethMainnetOwnerPrivateKey],
-      gasPrice: 'auto',
+      gasPrice: 1000000000,
     },
   },
 };
