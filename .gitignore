@@ -11,3 +11,7 @@ artifacts
 
 #IDEs
 .idea
+
+# Claude files
+.claude/
+CLAUDE.md

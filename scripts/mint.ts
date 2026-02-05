@@ -15,14 +15,14 @@ async function getBTCLatestBlock() {
 async function main() {
   const btcLatestBlock = await getBTCLatestBlock();
 
-  const SBCTokenContract = await ethers.getContractAt(
-    'SBCToken',
-    config.sbcTokenContractAddress,
+  const SBPTokenContract = await ethers.getContractAt(
+    'SBPToken',
+    config.sbpTokenContractAddress,
   );
 
-  const result = await SBCTokenContract.mint(
+  const result = await SBPTokenContract.mint(
     config.mintToAccountAddress,
-    parseUnits('100', 8),
+    parseUnits('20000', 8),
     btcLatestBlock.height,
   );
 

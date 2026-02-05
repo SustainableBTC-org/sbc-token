@@ -5,6 +5,22 @@ import envConfig from './.config';
 
 const config: HardhatUserConfig = {
   solidity: '0.8.23',
+  etherscan: {
+    apiKey: envConfig.etherscanApiKey,
+    customChains: [
+      {
+        network: 'base',
+        chainId: 8453,
+        urls: {
+          apiURL: 'https://api.etherscan.io/v2/api?chainid=8453',
+          browserURL: 'https://basescan.org/',
+        },
+      },
+    ],
+  },
+  sourcify: {
+    enabled: false,
+  },
   networks: {
     hardhat: {},
     localhost: {

@@ -1,5 +1,5 @@
-# sbc-token
-Sustainable Bitcoin Certificate - Token 
+# sbp-token
+Sustainable Bitcoin Protocol - Token 
 
 ### Setup env
 ```shell

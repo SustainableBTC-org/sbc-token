@@ -11,8 +11,10 @@ const config = {
   ethMainnetUrl: process.env.ETH_MAINNET_URL || '',
   ethMainnetOwnerPrivateKey: process.env.ETH_MAINNET_OWNER_PRVATE_KEY || '',
 
-  sbcTokenContractAddress: process.env.SBC_TOKEN_CONTRACT_ADDRESS || '',
+  sbpTokenContractAddress: process.env.SBP_TOKEN_CONTRACT_ADDRESS || '',
   mintToAccountAddress: process.env.MINT_TO_ACCOUNT_ADDRESS || '',
+
+  etherscanApiKey: process.env.ETHERSCAN_API_KEY || '',
 };
 
 export default config;

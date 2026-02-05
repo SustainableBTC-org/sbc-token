@@ -6,15 +6,15 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 
-contract SBCToken is Ownable, ERC20Capped, ERC20Permit {
+contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
     mapping (uint256 => uint256) public tokensMintedAtBtcBlockHeight;
     uint256[] public btcBlockHeights;
 
     constructor(address initialOwner)
-        ERC20("Sustainable Bitcoin Certificate", "SBC")
+        ERC20("Sustainable Bitcoin Protocol", "SBP")
         ERC20Capped(21000000 * 10 ** 8)
         Ownable(initialOwner)
-        ERC20Permit("Sustainable Bitcoin Certificate")
+        ERC20Permit("Sustainable Bitcoin Protocol")
     {}
 
     function decimals() override public pure returns (uint8) {

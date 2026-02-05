@@ -3,10 +3,10 @@ import { ethers } from 'hardhat';
 async function main() {
   const [owner] = await ethers.getSigners();
 
-  const SBCToken = await ethers.deployContract('SBCToken', [owner]);
-  await SBCToken.waitForDeployment();
+  const SBPToken = await ethers.deployContract('SBPToken', [owner]);
+  await SBPToken.waitForDeployment();
 
-  console.log(`SBCToken deployed at address: ${SBCToken.target}`);
+  console.log(`SBPToken deployed at address: ${SBPToken.target}`);
 }
 
 main().catch((error) => {
