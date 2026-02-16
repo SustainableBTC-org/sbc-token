@@ -11,6 +11,9 @@ import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 ///         Each mint is linked to a Bitcoin block height, creating an on-chain record of issuance provenance.
 /// @dev Inherits OpenZeppelin v5 Ownable, ERC20Capped, and ERC20Permit. Only the contract owner can mint and burn.
 contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
+    /// @notice Thrown when attempting to renounce ownership.
+    error RenounceOwnershipDisabled();
+
     /// @notice Amount of tokens minted at a given Bitcoin block height.
     mapping (uint256 => uint256) public tokensMintedAtBtcBlockHeight;
 
@@ -55,6 +58,11 @@ contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
     /// @param value Amount of tokens to burn (in smallest unit).
     function burn(uint256 value) public onlyOwner {
         _burn(_msgSender(), value);
+    }
+
+    /// @notice Overridden to always revert — ownership cannot be renounced.
+    function renounceOwnership() public pure override {
+        revert RenounceOwnershipDisabled();
     }
 
     /// @dev Resolves the diamond inheritance conflict between ERC20 and ERC20Capped.

@@ -130,6 +130,22 @@ describe('SBPToken', function () {
       expect(await SBPToken.owner()).to.equal(account1.address);
     });
 
+    it('Renounce ownership by owner - Should always revert', async function () {
+      const { SBPToken } = await loadFixture(deployFixture);
+
+      await expect(
+        SBPToken.renounceOwnership(),
+      ).to.be.revertedWithCustomError(SBPToken, 'RenounceOwnershipDisabled');
+    });
+
+    it('Renounce ownership by non owner - Should always revert', async function () {
+      const { SBPToken, account1 } = await loadFixture(deployFixture);
+
+      await expect(
+        SBPToken.connect(account1).renounceOwnership(),
+      ).to.be.revertedWithCustomError(SBPToken, 'RenounceOwnershipDisabled');
+    });
+
     it('Mint by initial owner - Should not be able to mint', async function () {
       const { SBPToken, owner, account1 } = await loadFixture(deployFixture);
 
