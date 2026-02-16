@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 /// @dev Inherits OpenZeppelin v5 Ownable, ERC20Capped, and ERC20Permit. Only the contract owner can mint and burn.
 contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
     /// @notice Amount of tokens minted at a given Bitcoin block height.
-    mapping (uint256 => uint256) public tokensMintedAtBtcBlockHeight;
+    mapping(uint256 => uint256) public tokensMintedAtBtcBlockHeight;
 
     /// @notice Ordered list of Bitcoin block heights at which tokens were minted.
     uint256[] public btcBlockHeights;
@@ -26,7 +26,10 @@ contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
     {}
 
     /// @notice Returns the number of decimals used by the token (8, matching Bitcoin).
-    function decimals() override public pure returns (uint8) {
+    function decimals() public view override returns (uint8) {
+        // solc warns "state mutability can be restricted to pure" but the parent
+        // declaration is `view`, so we keep `view` for interface compatibility.
+
         return 8;
     }
 
