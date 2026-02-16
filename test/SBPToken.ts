@@ -85,6 +85,58 @@ describe('SBPToken', function () {
     });
   });
 
+  describe('Pagination', function () {
+    async function mintedFixture() {
+      const [owner, account1, account2] = await ethers.getSigners();
+      const SBPToken = await ethers.deployContract('SBPToken', [owner]);
+      const tokensPerMint = parseUnits('1', 8);
+
+      for (const height of [100, 200, 300, 400, 500]) {
+        await SBPToken.mint(owner.address, tokensPerMint, height);
+      }
+
+      return { SBPToken, owner, account1, account2 };
+    }
+
+    it('getBtcBlockHeightsCount - Should return total count', async function () {
+      const { SBPToken } = await loadFixture(mintedFixture);
+
+      expect(await SBPToken.getBtcBlockHeightsCount()).to.equal(5);
+    });
+
+    it('getBtcBlockHeightsPaginated - Should return first page', async function () {
+      const { SBPToken } = await loadFixture(mintedFixture);
+
+      expect(
+        await SBPToken.getBtcBlockHeightsPaginated(0, 2),
+      ).to.deep.equal([100, 200]);
+    });
+
+    it('getBtcBlockHeightsPaginated - Should return middle page', async function () {
+      const { SBPToken } = await loadFixture(mintedFixture);
+
+      expect(
+        await SBPToken.getBtcBlockHeightsPaginated(2, 2),
+      ).to.deep.equal([300, 400]);
+    });
+
+    it('getBtcBlockHeightsPaginated - Should clamp limit to remaining items', async function () {
+      const { SBPToken } = await loadFixture(mintedFixture);
+
+      expect(
+        await SBPToken.getBtcBlockHeightsPaginated(3, 10),
+      ).to.deep.equal([400, 500]);
+    });
+
+    it('getBtcBlockHeightsPaginated - Should return empty array when offset is out of bounds', async function () {
+      const { SBPToken } = await loadFixture(mintedFixture);
+
+      expect(
+        await SBPToken.getBtcBlockHeightsPaginated(10, 5),
+      ).to.deep.equal([]);
+    });
+  });
+
   describe('Burning', function () {
     it('Burn by owner - Should be able to burn', async function () {
       const { SBPToken, owner } = await loadFixture(deployFixture);
@@ -138,6 +190,22 @@ describe('SBPToken', function () {
       await SBPToken.transferOwnership(account1.address);
 
       expect(await SBPToken.owner()).to.equal(account1.address);
+    });
+
+    it('Renounce ownership by owner - Should always revert', async function () {
+      const { SBPToken } = await loadFixture(deployFixture);
+
+      await expect(
+        SBPToken.renounceOwnership(),
+      ).to.be.revertedWithCustomError(SBPToken, 'RenounceOwnershipDisabled');
+    });
+
+    it('Renounce ownership by non owner - Should always revert', async function () {
+      const { SBPToken, account1 } = await loadFixture(deployFixture);
+
+      await expect(
+        SBPToken.connect(account1).renounceOwnership(),
+      ).to.be.revertedWithCustomError(SBPToken, 'RenounceOwnershipDisabled');
     });
 
     it('Mint by initial owner - Should not be able to mint', async function () {
