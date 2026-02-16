@@ -11,6 +11,15 @@ import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 ///         Each mint is linked to a Bitcoin block height, creating an on-chain record of issuance provenance.
 /// @dev Inherits OpenZeppelin v5 Ownable, ERC20Capped, and ERC20Permit. Only the contract owner can mint and burn.
 contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
+    /// @notice Thrown when the mint recipient is the zero address.
+    error MintToZeroAddress();
+
+    /// @notice Thrown when the mint amount is zero.
+    error MintAmountZero();
+
+    /// @notice Thrown when the BTC block height is zero.
+    error BtcBlockHeightZero();
+
     /// @notice Amount of tokens minted at a given Bitcoin block height.
     mapping (uint256 => uint256) public tokensMintedAtBtcBlockHeight;
 
@@ -35,6 +44,10 @@ contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
     /// @param amount Number of tokens to mint (in smallest unit, i.e. 10^-8).
     /// @param btcBlockHeight Bitcoin block height at which the issuance is anchored.
     function mint(address to, uint256 amount, uint256 btcBlockHeight) public onlyOwner {
+        if (to == address(0)) revert MintToZeroAddress();
+        if (amount == 0) revert MintAmountZero();
+        if (btcBlockHeight == 0) revert BtcBlockHeightZero();
+
         _mint(to, amount);
 
         tokensMintedAtBtcBlockHeight[btcBlockHeight] = amount;
