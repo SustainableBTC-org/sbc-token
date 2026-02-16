@@ -40,6 +40,30 @@ describe('SBPToken', function () {
       expect(await SBPToken.totalSupply()).to.equal(ownerBalance);
     });
 
+    it('Mint to zero address - Should revert', async function () {
+      const { SBPToken } = await loadFixture(deployFixture);
+
+      await expect(
+        SBPToken.mint(ethers.ZeroAddress, 10 * 10 ** 8, 1),
+      ).to.be.revertedWithCustomError(SBPToken, 'MintToZeroAddress');
+    });
+
+    it('Mint zero amount - Should revert', async function () {
+      const { SBPToken, owner } = await loadFixture(deployFixture);
+
+      await expect(
+        SBPToken.mint(owner.address, 0, 1),
+      ).to.be.revertedWithCustomError(SBPToken, 'MintAmountZero');
+    });
+
+    it('Mint with zero BTC block height - Should revert', async function () {
+      const { SBPToken, owner } = await loadFixture(deployFixture);
+
+      await expect(
+        SBPToken.mint(owner.address, 10 * 10 ** 8, 0),
+      ).to.be.revertedWithCustomError(SBPToken, 'BtcBlockHeightZero');
+    });
+
     it('Mint by non owner - Should not be able to mint', async function () {
       const { SBPToken, account1 } = await loadFixture(deployFixture);
 
