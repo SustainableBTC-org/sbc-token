@@ -25,7 +25,10 @@ contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
     {}
 
     /// @notice Returns the number of decimals used by the token (8, matching Bitcoin).
-    function decimals() public pure override returns (uint8) {
+    function decimals() public view override returns (uint8) {
+        // solc warns "state mutability can be restricted to pure" but the parent
+        // declaration is `view`, so we keep `view` for interface compatibility.
+
         return 8;
     }
 
