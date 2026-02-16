@@ -4,7 +4,6 @@ pragma solidity ^0.8.23;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 
 /// @title SBP Token — Sustainable Bitcoin Protocol
 /// @notice ERC-20 token with a 21 million hard cap and 8 decimals (matching Bitcoin's satoshi precision).
@@ -12,7 +11,7 @@ import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 /// @dev Inherits OpenZeppelin v5 Ownable, ERC20Capped, and ERC20Permit. Only the contract owner can mint and burn.
 contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
     /// @notice Amount of tokens minted at a given Bitcoin block height.
-    mapping (uint256 => uint256) public tokensMintedAtBtcBlockHeight;
+    mapping(uint256 => uint256) public tokensMintedAtBtcBlockHeight;
 
     /// @notice Ordered list of Bitcoin block heights at which tokens were minted.
     uint256[] public btcBlockHeights;
@@ -26,7 +25,7 @@ contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
     {}
 
     /// @notice Returns the number of decimals used by the token (8, matching Bitcoin).
-    function decimals() override public pure returns (uint8) {
+    function decimals() public pure override returns (uint8) {
         return 8;
     }
 
