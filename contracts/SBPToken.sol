@@ -4,7 +4,6 @@ pragma solidity ^0.8.23;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 
 /// @title SBP Token — Sustainable Bitcoin Protocol
 /// @notice ERC-20 token with a 21 million hard cap and 8 decimals (matching Bitcoin's satoshi precision).
