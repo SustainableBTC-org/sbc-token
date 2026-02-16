@@ -46,6 +46,9 @@ contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
     }
 
     /// @notice Mints tokens to an address and records the associated Bitcoin block height.
+    /// @dev The owner may mint at any Bitcoin block height, old or new, in any order.
+    ///      If a block height has been used before, the amount is accumulated and the
+    ///      height is not added to the array again.
     /// @param to Recipient of the minted tokens.
     /// @param amount Number of tokens to mint (in smallest unit, i.e. 10^-8).
     /// @param btcBlockHeight Bitcoin block height at which the issuance is anchored.
@@ -56,8 +59,10 @@ contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
 
         _mint(to, amount);
 
-        tokensMintedAtBtcBlockHeight[btcBlockHeight] = amount;
-        btcBlockHeights.push(btcBlockHeight);
+        if (tokensMintedAtBtcBlockHeight[btcBlockHeight] == 0) {
+            btcBlockHeights.push(btcBlockHeight);
+        }
+        tokensMintedAtBtcBlockHeight[btcBlockHeight] += amount;
 
         emit MintedAtBtcBlockHeight(to, amount, btcBlockHeight);
     }

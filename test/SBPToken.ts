@@ -98,6 +98,21 @@ describe('SBPToken', function () {
       );
     });
 
+    it('Mint at same BTC height - Should accumulate amount and not duplicate height', async function () {
+      const { SBPToken, owner } = await loadFixture(deployFixture);
+
+      const firstMint = parseUnits('5', 8);
+      const secondMint = parseUnits('3', 8);
+
+      await SBPToken.mint(owner.address, firstMint, 100);
+      await SBPToken.mint(owner.address, secondMint, 100);
+
+      expect(await SBPToken.getBtcBlockHeights()).to.deep.equal([100]);
+      expect(await SBPToken.tokensMintedAtBtcBlockHeight(100)).to.equal(
+        firstMint + secondMint,
+      );
+    });
+
     it('Mint should emit MintedAtBtcBlockHeight event', async function () {
       const { SBPToken, account1 } = await loadFixture(deployFixture);
 
