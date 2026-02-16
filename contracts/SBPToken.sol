@@ -49,9 +49,31 @@ contract SBPToken is Ownable, ERC20Capped, ERC20Permit {
     /// @notice Returns all Bitcoin block heights at which tokens have been minted.
     /// @return An array of Bitcoin block heights in chronological mint order.
     function getBtcBlockHeights() public view returns (uint256[] memory) {
-        uint256[] memory heights = new uint256[](btcBlockHeights.length);
+        return btcBlockHeights;
+    }
 
-        heights = btcBlockHeights;
+    /// @notice Returns the total number of Bitcoin block heights recorded.
+    /// @return The length of the btcBlockHeights array.
+    function getBtcBlockHeightsCount() public view returns (uint256) {
+        return btcBlockHeights.length;
+    }
+
+    /// @notice Returns a paginated slice of Bitcoin block heights.
+    /// @param offset The starting index in the btcBlockHeights array.
+    /// @param limit The maximum number of items to return.
+    /// @return An array of Bitcoin block heights starting from offset, up to limit items.
+    function getBtcBlockHeightsPaginated(uint256 offset, uint256 limit) public view returns (uint256[] memory) {
+        if (offset >= btcBlockHeights.length) {
+            return new uint256[](0);
+        }
+
+        uint256 remaining = btcBlockHeights.length - offset;
+        uint256 size = limit < remaining ? limit : remaining;
+
+        uint256[] memory heights = new uint256[](size);
+        for (uint256 i = 0; i < size; i++) {
+            heights[i] = btcBlockHeights[offset + i];
+        }
 
         return heights;
     }
