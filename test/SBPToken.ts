@@ -20,6 +20,11 @@ describe('SBPToken', function () {
       const { SBPToken } = await loadFixture(deployFixture);
       expect(await SBPToken.totalSupply()).to.equal(0);
     });
+
+    it('Should use 8 decimals', async function () {
+      const { SBPToken } = await loadFixture(deployFixture);
+      expect(await SBPToken.decimals()).to.equal(8);
+    });
   });
 
   describe('Minting', function () {
