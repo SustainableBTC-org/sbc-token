@@ -73,6 +73,16 @@ describe('SBPToken', function () {
         tokensToMint,
       );
     });
+
+    it('Mint should emit MintedAtBtcBlockHeight event', async function () {
+      const { SBPToken, account1 } = await loadFixture(deployFixture);
+
+      const tokensToMint = parseUnits('10', 8);
+
+      await expect(SBPToken.mint(account1.address, tokensToMint, 456))
+        .to.emit(SBPToken, 'MintedAtBtcBlockHeight')
+        .withArgs(account1.address, tokensToMint, 456);
+    });
   });
 
   describe('Burning', function () {
